@@ -18,7 +18,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 @Module abstract class TelecineModule {
   private static final String PREFERENCES_NAME = "telecine";
-  private static final boolean DEFAULT_SHOW_COUNTDOWN = true;
   private static final boolean DEFAULT_HIDE_FROM_RECENTS = false;
   private static final boolean DEFAULT_USE_DEMO_MODE = false;
   private static final boolean DEFAULT_RECORDING_NOTIFICATION = false;
@@ -47,15 +46,6 @@ import static android.content.Context.MODE_PRIVATE;
     return app.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
   }
 
-  @Provides @Singleton @ShowCountdown
-  static BooleanPreference provideShowCountdownPreference(SharedPreferences prefs) {
-    return new BooleanPreference(prefs, "show-countdown", DEFAULT_SHOW_COUNTDOWN);
-  }
-
-  @Provides @ShowCountdown
-  static Boolean provideShowCountdown(@ShowCountdown BooleanPreference pref) {
-    return pref.get();
-  }
 
   @Provides @Singleton @RecordingNotification
   static BooleanPreference provideRecordingNotificationPreference(SharedPreferences prefs) {

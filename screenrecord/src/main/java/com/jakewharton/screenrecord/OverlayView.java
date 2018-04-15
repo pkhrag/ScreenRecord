@@ -38,8 +38,8 @@ final class OverlayView extends FrameLayout {
   private static final int NON_COUNTDOWN_DELAY = 500;
   private static final int DURATION_ENTER_EXIT = 300;
 
-  static OverlayView create(Context context, Listener listener, boolean showCountDown) {
-    return new OverlayView(context, listener, showCountDown);
+  static OverlayView create(Context context, Listener listener) {
+    return new OverlayView(context, listener);
   }
 
   static WindowManager.LayoutParams createLayoutParams(Context context) {
@@ -94,12 +94,12 @@ final class OverlayView extends FrameLayout {
   @BindDimen(com.jakewharton.screenrecord.R.dimen.overlay_width) int animationWidth;
 
   private final Listener listener;
-  private final boolean showCountDown;
+//  private final boolean showCountDown;
 
-  private OverlayView(Context context, Listener listener, boolean showCountDown) {
+  private OverlayView(Context context, Listener listener) {
     super(context);
     this.listener = listener;
-    this.showCountDown = showCountDown;
+//    this.showCountDown = showCountDown;
 
     inflate(context, com.jakewharton.screenrecord.R.layout.overlay_view, this);
     ButterKnife.bind(this);
@@ -155,13 +155,11 @@ final class OverlayView extends FrameLayout {
 
     postDelayed(new Runnable() {
       @Override public void run() {
-        if (showCountDown) {
-          showCountDown();
-        } else {
+    {
           countdownComplete();
         }
       }
-    }, showCountDown ? COUNTDOWN_DELAY : NON_COUNTDOWN_DELAY);
+    }, NON_COUNTDOWN_DELAY);
   }
 
   private void startRecording() {
@@ -175,11 +173,6 @@ final class OverlayView extends FrameLayout {
     listener.onStart();
   }
 
-  private void showCountDown() {
-    String[] countdown = getResources().getStringArray(com.jakewharton.screenrecord.R.array.countdown);
-    countdown(countdown, 0); // array resource must not be empty
-  }
-
   private void countdownComplete() {
     listener.onPrepare();
     recordingView.animate()
@@ -191,17 +184,5 @@ final class OverlayView extends FrameLayout {
           }
         });
   }
-
-  private void countdown(final String[] countdownArr, final int index) {
-    postDelayed(new Runnable() {
-      @Override public void run() {
-        recordingView.setText(countdownArr[index]);
-        if (index < countdownArr.length - 1) {
-          countdown(countdownArr, index + 1);
-        } else {
-          countdownComplete();
-        }
-      }
-    }, COUNTDOWN_DELAY);
-  }
+  
 }

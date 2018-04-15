@@ -29,7 +29,6 @@ import static android.view.View.VISIBLE;
 
 public final class TelecineActivity extends AppCompatActivity {
   @BindView(com.jakewharton.screenrecord.R.id.spinner_video_size_percentage) Spinner videoSizePercentageView;
-  @BindView(com.jakewharton.screenrecord.R.id.switch_show_countdown) Switch showCountdownView;
   @BindView(com.jakewharton.screenrecord.R.id.switch_hide_from_recents) Switch hideFromRecentsView;
   @BindView(com.jakewharton.screenrecord.R.id.switch_recording_notification) Switch recordingNotificationView;
   @BindView(com.jakewharton.screenrecord.R.id.container_use_demo_mode) View useDemoModeContainerView;
@@ -40,7 +39,6 @@ public final class TelecineActivity extends AppCompatActivity {
   @BindColor(com.jakewharton.screenrecord.R.color.primary_normal) int primaryNormal;
 
   @Inject @VideoSizePercentage IntPreference videoSizePreference;
-  @Inject @ShowCountdown BooleanPreference showCountdownPreference;
   @Inject @HideFromRecents BooleanPreference hideFromRecentsPreference;
   @Inject @RecordingNotification BooleanPreference recordingNotificationPreference;
   @Inject @UseDemoMode BooleanPreference useDemoModePreference;
@@ -70,7 +68,6 @@ public final class TelecineActivity extends AppCompatActivity {
     videoSizePercentageView.setSelection(
         VideoSizePercentageAdapter.getSelectedPosition(videoSizePreference.get()));
 
-    showCountdownView.setChecked(showCountdownPreference.get());
     hideFromRecentsView.setChecked(hideFromRecentsPreference.get());
     recordingNotificationView.setChecked(recordingNotificationPreference.get());
     useDemoModeView.setChecked(useDemoModePreference.get());
@@ -113,15 +110,6 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Video size percentage changing to %s%%", newValue);
       videoSizePreference.set(newValue);
-    }
-  }
-
-  @OnCheckedChanged(com.jakewharton.screenrecord.R.id.switch_show_countdown) void onShowCountdownChanged() {
-    boolean newValue = showCountdownView.isChecked();
-    boolean oldValue = showCountdownPreference.get();
-    if (newValue != oldValue) {
-      Timber.d("Hide show countdown changing to %s", newValue);
-      showCountdownPreference.set(newValue);
     }
   }
 

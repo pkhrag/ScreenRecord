@@ -79,7 +79,6 @@ final class RecordingSession {
   private final int resultCode;
   private final Intent data;
 
-  private final Provider<Boolean> showCountDown;
   private final Provider<Integer> videoSizePercentage;
 
   private final File outputRoot;
@@ -99,13 +98,12 @@ final class RecordingSession {
   private long recordingStartNanos;
 
   RecordingSession(Context context, Listener listener, int resultCode, Intent data,
-      Analytics analytics, Provider<Boolean> showCountDown, Provider<Integer> videoSizePercentage) {
+      Analytics analytics, Provider<Integer> videoSizePercentage) {
     this.context = context;
     this.listener = listener;
     this.resultCode = resultCode;
     this.data = data;
 
-    this.showCountDown = showCountDown;
     this.videoSizePercentage = videoSizePercentage;
 
     File picturesDir = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES);
@@ -140,7 +138,7 @@ final class RecordingSession {
         windowManager.updateViewLayout(overlayView, overlayView.getLayoutParams());
       }
     };
-    overlayView = OverlayView.create(context, overlayListener, showCountDown.get());
+    overlayView = OverlayView.create(context, overlayListener);
     windowManager.addView(overlayView, OverlayView.createLayoutParams(context));
   }
 

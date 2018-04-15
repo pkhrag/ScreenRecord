@@ -37,7 +37,6 @@ public final class TelecineService extends Service {
     return intent;
   }
 
-  @Inject @ShowCountdown Provider<Boolean> showCountdownProvider;
   @Inject @VideoSizePercentage Provider<Integer> videoSizePercentageProvider;
   @Inject @RecordingNotification Provider<Boolean> recordingNotificationProvider;
   @Inject @UseDemoMode Provider<Boolean> useDemoModeProvider;
@@ -132,7 +131,7 @@ public final class TelecineService extends Service {
     }
 
     recordingSession =
-        new RecordingSession(this, listener, resultCode, data, analytics, showCountdownProvider,
+        new RecordingSession(this, listener, resultCode, data, analytics,
             videoSizePercentageProvider);
     recordingSession.showOverlay();
 
