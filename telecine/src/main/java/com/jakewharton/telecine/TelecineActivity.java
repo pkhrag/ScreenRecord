@@ -48,7 +48,6 @@ public final class TelecineActivity extends AppCompatActivity {
   @Inject @ShowTouches BooleanPreference showTouchesPreference;
   @Inject @UseDemoMode BooleanPreference useDemoModePreference;
 
-  @Inject Analytics analytics;
 
   private VideoSizePercentageAdapter videoSizePercentageAdapter;
   private DemoModeHelper.ShowDemoModeSetting showDemoModeSetting;
@@ -108,7 +107,7 @@ public final class TelecineActivity extends AppCompatActivity {
 
   @OnClick(R.id.launch) void onLaunchClicked() {
     Timber.d("Attempting to acquire permission to screen capture.");
-    CaptureHelper.fireScreenCaptureIntent(this, analytics);
+    CaptureHelper.fireScreenCaptureIntent(this);
   }
 
   @OnItemSelected(R.id.spinner_video_size_percentage) void onVideoSizePercentageSelected(
@@ -118,12 +117,6 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Video size percentage changing to %s%%", newValue);
       videoSizePreference.set(newValue);
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_VIDEO_SIZE)
-          .setValue(newValue)
-          .build());
     }
   }
 
@@ -133,12 +126,6 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Hide show countdown changing to %s", newValue);
       showCountdownPreference.set(newValue);
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_SHOW_COUNTDOWN)
-          .setValue(newValue ? 1 : 0)
-          .build());
     }
   }
 
@@ -148,12 +135,6 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Hide from recents preference changing to %s", newValue);
       hideFromRecentsPreference.set(newValue);
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_HIDE_RECENTS)
-          .setValue(newValue ? 1 : 0)
-          .build());
     }
   }
 
@@ -163,12 +144,6 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Recording notification preference changing to %s", newValue);
       recordingNotificationPreference.set(newValue);
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_RECORDING_NOTIFICATION)
-          .setValue(newValue ? 1 : 0)
-          .build());
     }
   }
 
@@ -178,12 +153,6 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Show touches preference changing to %s", newValue);
       showTouchesPreference.set(newValue);
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_SHOW_TOUCHES)
-          .setValue(newValue ? 1 : 0)
-          .build());
     }
   }
 
@@ -193,17 +162,11 @@ public final class TelecineActivity extends AppCompatActivity {
     if (newValue != oldValue) {
       Timber.d("Use demo mode preference changing to %s", newValue);
       useDemoModePreference.set(newValue);
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_SETTINGS)
-          .setAction(Analytics.ACTION_CHANGE_USE_DEMO_MODE)
-          .setValue(newValue ? 1 : 0)
-          .build());
     }
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (!CaptureHelper.handleActivityResult(this, requestCode, resultCode, data, analytics)
+    if (!CaptureHelper.handleActivityResult(this, requestCode, resultCode, data)
         && !DemoModeHelper.handleActivityResult(this, requestCode, showDemoModeSetting)) {
       super.onActivityResult(requestCode, resultCode, data);
     }

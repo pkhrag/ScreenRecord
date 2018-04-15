@@ -15,20 +15,15 @@ final class CaptureHelper {
     throw new AssertionError("No instances.");
   }
 
-  static void fireScreenCaptureIntent(Activity activity, Analytics analytics) {
+  static void fireScreenCaptureIntent(Activity activity) {
     MediaProjectionManager manager =
         (MediaProjectionManager) activity.getSystemService(MEDIA_PROJECTION_SERVICE);
     Intent intent = manager.createScreenCaptureIntent();
     activity.startActivityForResult(intent, CREATE_SCREEN_CAPTURE);
-
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_SETTINGS)
-        .setAction(Analytics.ACTION_CAPTURE_INTENT_LAUNCH)
-        .build());
   }
 
   static boolean handleActivityResult(Activity activity, int requestCode, int resultCode,
-      Intent data, Analytics analytics) {
+      Intent data) {
     if (requestCode != CREATE_SCREEN_CAPTURE) {
       return false;
     }
@@ -39,12 +34,6 @@ final class CaptureHelper {
     } else {
       Timber.d("Failed to acquire permission to screen capture.");
     }
-
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_SETTINGS)
-        .setAction(Analytics.ACTION_CAPTURE_INTENT_RESULT)
-        .setValue(resultCode)
-        .build());
 
     return true;
   }

@@ -79,7 +79,6 @@ final class RecordingSession {
   private final int resultCode;
   private final Intent data;
 
-  private final Analytics analytics;
   private final Provider<Boolean> showCountDown;
   private final Provider<Integer> videoSizePercentage;
 
@@ -105,7 +104,6 @@ final class RecordingSession {
     this.listener = listener;
     this.resultCode = resultCode;
     this.data = data;
-    this.analytics = analytics;
 
     this.showCountDown = showCountDown;
     this.videoSizePercentage = videoSizePercentage;
@@ -144,11 +142,6 @@ final class RecordingSession {
     };
     overlayView = OverlayView.create(context, overlayListener, showCountDown.get());
     windowManager.addView(overlayView, OverlayView.createLayoutParams(context));
-
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_RECORDING)
-        .setAction(Analytics.ACTION_OVERLAY_SHOW)
-        .build());
   }
 
   private void hideOverlay() {
@@ -156,22 +149,12 @@ final class RecordingSession {
       Timber.d("Removing overlay view from window.");
       windowManager.removeView(overlayView);
       overlayView = null;
-
-      analytics.send(new HitBuilders.EventBuilder() //
-          .setCategory(Analytics.CATEGORY_RECORDING)
-          .setAction(Analytics.ACTION_OVERLAY_HIDE)
-          .build());
     }
   }
 
   private void cancelOverlay() {
     hideOverlay();
     listener.onEnd();
-
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_RECORDING)
-        .setAction(Analytics.ACTION_OVERLAY_CANCEL)
-        .build());
   }
 
   private RecordingInfo getRecordingInfo() {
@@ -247,11 +230,6 @@ final class RecordingSession {
     listener.onStart();
 
     Timber.d("Screen recording started.");
-
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_RECORDING)
-        .setAction(Analytics.ACTION_RECORDING_START)
-        .build());
   }
 
   private void stopRecording() {
@@ -283,21 +261,9 @@ final class RecordingSession {
         }
       }
     }
-
-    long recordingStopNanos = System.nanoTime();
-
+    
     recorder.release();
     display.release();
-
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_RECORDING)
-        .setAction(Analytics.ACTION_RECORDING_STOP)
-        .build());
-    analytics.send(new HitBuilders.TimingBuilder() //
-        .setCategory(Analytics.CATEGORY_RECORDING)
-        .setValue(TimeUnit.NANOSECONDS.toMillis(recordingStopNanos - recordingStartNanos))
-        .setVariable(Analytics.VARIABLE_RECORDING_LENGTH)
-        .build());
 
     Timber.d("Screen recording stopped. Notifying media scanner of new video.");
 

@@ -16,11 +16,6 @@ public final class TelecineShortcutConfigureActivity extends Activity {
     AndroidInjection.inject(this);
     super.onCreate(savedInstanceState);
 
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_SHORTCUT) //
-        .setAction(Analytics.ACTION_SHORTCUT_ADDED) //
-        .build());
-
     Intent launchIntent = new Intent(this, TelecineShortcutLaunchActivity.class);
     ShortcutIconResource icon = ShortcutIconResource.fromContext(this, R.drawable.ic_launcher);
 

@@ -36,17 +36,9 @@ public final class TelecineTileService extends TileService {
 
   @Override public void onTileAdded() {
     Timber.i("Quick tile added");
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_QUICK_TILE)
-        .setAction(Analytics.ACTION_QUICK_TILE_ADDED)
-        .build());
   }
 
   @Override public void onTileRemoved() {
     Timber.i("Quick tile removed");
-    analytics.send(new HitBuilders.EventBuilder() //
-        .setCategory(Analytics.CATEGORY_QUICK_TILE)
-        .setAction(Analytics.ACTION_QUICK_TILE_REMOVED)
-        .build());
   }
 }
