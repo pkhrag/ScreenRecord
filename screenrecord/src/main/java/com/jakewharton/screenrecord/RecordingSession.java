@@ -350,9 +350,9 @@ final class RecordingSession {
     }.execute();
   }
 
-  static RecordingInfo calculateRecordingInfo(int displayWidth, int displayHeight,
-      int displayDensity, boolean isLandscapeDevice, int cameraWidth, int cameraHeight,
-      int cameraFrameRate, int sizePercentage) {
+  public static RecordingInfo calculateRecordingInfo(int displayWidth, int displayHeight,
+                                                     int displayDensity, boolean isLandscapeDevice, int cameraWidth, int cameraHeight,
+                                                     int cameraFrameRate, int sizePercentage) {
     // Scale the display size before any maximum size calculations.
     displayWidth = displayWidth * sizePercentage / 100;
     displayHeight = displayHeight * sizePercentage / 100;
@@ -378,11 +378,11 @@ final class RecordingSession {
     return new RecordingInfo(frameWidth, frameHeight, cameraFrameRate, displayDensity);
   }
 
-  static final class RecordingInfo {
-    final int width;
-    final int height;
+  public static final class RecordingInfo {
+    public final int width;
+    public final int height;
     final int frameRate;
-    final int density;
+    public final int density;
 
     RecordingInfo(int width, int height, int frameRate, int density) {
       this.width = width;

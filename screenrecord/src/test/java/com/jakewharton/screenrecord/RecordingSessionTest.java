@@ -1,4 +1,4 @@
-package com.jakewharton.telecine;
+package com.jakewharton.screenrecord;
 
 import org.junit.Test;
 
