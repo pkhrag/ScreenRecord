@@ -30,7 +30,6 @@ public final class TelecineService extends Service {
   private static final String EXTRA_RESULT_CODE = "result-code";
   private static final String EXTRA_DATA = "data";
   private static final int NOTIFICATION_ID = 99118822;
-  private static final String SHOW_TOUCHES = "show_touches";
 
   static Intent newIntent(Context context, int resultCode, Intent data) {
     Intent intent = new Intent(context, TelecineService.class);
@@ -42,7 +41,6 @@ public final class TelecineService extends Service {
   @Inject @ShowCountdown Provider<Boolean> showCountdownProvider;
   @Inject @VideoSizePercentage Provider<Integer> videoSizePercentageProvider;
   @Inject @RecordingNotification Provider<Boolean> recordingNotificationProvider;
-  @Inject @ShowTouches Provider<Boolean> showTouchesProvider;
   @Inject @UseDemoMode Provider<Boolean> useDemoModeProvider;
 
   @Inject Analytics analytics;
@@ -52,11 +50,9 @@ public final class TelecineService extends Service {
   private RecordingSession recordingSession;
 
   private final RecordingSession.Listener listener = new RecordingSession.Listener() {
-    private boolean showTouches;
     private boolean useDemoMode;
 
     @Override public void onPrepare() {
-      showTouches = showTouchesProvider.get();
       useDemoMode = useDemoModeProvider.get();
       if (useDemoMode) {
         sendBroadcast(new BarsBuilder().mode(BarsBuilder.BarsMode.TRANSPARENT).build());
@@ -84,9 +80,6 @@ public final class TelecineService extends Service {
     }
 
     @Override public void onStart() {
-      if (showTouches) {
-        Settings.System.putInt(contentResolver, SHOW_TOUCHES, 1);
-      }
 
       if (!recordingNotificationProvider.get()) {
         return; // No running notification was requested.
@@ -109,9 +102,6 @@ public final class TelecineService extends Service {
     }
 
     @Override public void onStop() {
-      if (showTouches) {
-        Settings.System.putInt(contentResolver, SHOW_TOUCHES, 0);
-      }
       if (useDemoMode) {
         sendBroadcast(DemoMode.buildExit());
       }

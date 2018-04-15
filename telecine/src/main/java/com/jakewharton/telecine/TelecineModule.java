@@ -18,7 +18,6 @@ import static android.content.Context.MODE_PRIVATE;
   private static final String PREFERENCES_NAME = "telecine";
   private static final boolean DEFAULT_SHOW_COUNTDOWN = true;
   private static final boolean DEFAULT_HIDE_FROM_RECENTS = false;
-  private static final boolean DEFAULT_SHOW_TOUCHES = false;
   private static final boolean DEFAULT_USE_DEMO_MODE = false;
   private static final boolean DEFAULT_RECORDING_NOTIFICATION = false;
   private static final int DEFAULT_VIDEO_SIZE_PERCENTAGE = 100;
@@ -69,15 +68,6 @@ import static android.content.Context.MODE_PRIVATE;
   @Provides @Singleton @HideFromRecents
   static BooleanPreference provideHideFromRecentsPreference(SharedPreferences prefs) {
     return new BooleanPreference(prefs, "hide-from-recents", DEFAULT_HIDE_FROM_RECENTS);
-  }
-
-  @Provides @Singleton @ShowTouches
-  static BooleanPreference provideShowTouchesPreference(SharedPreferences prefs) {
-    return new BooleanPreference(prefs, "show-touches", DEFAULT_SHOW_TOUCHES);
-  }
-
-  @Provides @ShowTouches static Boolean provideShowTouches(@ShowTouches BooleanPreference pref) {
-    return pref.get();
   }
 
   @Provides @Singleton @UseDemoMode

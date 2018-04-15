@@ -33,7 +33,6 @@ public final class TelecineActivity extends AppCompatActivity {
   @BindView(R.id.switch_show_countdown) Switch showCountdownView;
   @BindView(R.id.switch_hide_from_recents) Switch hideFromRecentsView;
   @BindView(R.id.switch_recording_notification) Switch recordingNotificationView;
-  @BindView(R.id.switch_show_touches) Switch showTouchesView;
   @BindView(R.id.container_use_demo_mode) View useDemoModeContainerView;
   @BindView(R.id.switch_use_demo_mode) Switch useDemoModeView;
   @BindView(R.id.launch) View launchView;
@@ -45,7 +44,6 @@ public final class TelecineActivity extends AppCompatActivity {
   @Inject @ShowCountdown BooleanPreference showCountdownPreference;
   @Inject @HideFromRecents BooleanPreference hideFromRecentsPreference;
   @Inject @RecordingNotification BooleanPreference recordingNotificationPreference;
-  @Inject @ShowTouches BooleanPreference showTouchesPreference;
   @Inject @UseDemoMode BooleanPreference useDemoModePreference;
 
 
@@ -76,7 +74,6 @@ public final class TelecineActivity extends AppCompatActivity {
     showCountdownView.setChecked(showCountdownPreference.get());
     hideFromRecentsView.setChecked(hideFromRecentsPreference.get());
     recordingNotificationView.setChecked(recordingNotificationPreference.get());
-    showTouchesView.setChecked(showTouchesPreference.get());
     useDemoModeView.setChecked(useDemoModePreference.get());
     showDemoModeSetting = new DemoModeHelper.ShowDemoModeSetting() {
       @Override public void show() {
@@ -147,14 +144,6 @@ public final class TelecineActivity extends AppCompatActivity {
     }
   }
 
-  @OnCheckedChanged(R.id.switch_show_touches) void onShowTouchesChanged() {
-    boolean newValue = showTouchesView.isChecked();
-    boolean oldValue = showTouchesPreference.get();
-    if (newValue != oldValue) {
-      Timber.d("Show touches preference changing to %s", newValue);
-      showTouchesPreference.set(newValue);
-    }
-  }
 
   @OnCheckedChanged(R.id.switch_use_demo_mode) void onUseDemoModeChanged() {
     boolean newValue = useDemoModeView.isChecked();
