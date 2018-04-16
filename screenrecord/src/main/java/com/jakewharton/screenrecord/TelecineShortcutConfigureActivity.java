@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import static android.content.Intent.ShortcutIconResource;
 
 public final class TelecineShortcutConfigureActivity extends Activity {
-  @Inject Analytics analytics;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     AndroidInjection.inject(this);

@@ -23,20 +23,6 @@ import static android.content.Context.MODE_PRIVATE;
   private static final boolean DEFAULT_RECORDING_NOTIFICATION = false;
   private static final int DEFAULT_VIDEO_SIZE_PERCENTAGE = 100;
 
-  @Provides @Singleton static Analytics provideAnalytics(Application app) {
-    if (BuildConfig.DEBUG) {
-      return new Analytics() {
-        @Override public void send(Map<String, String> params) {
-          Timber.tag("Analytics").d(String.valueOf(params));
-        }
-      };
-    }
-
-    GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(app);
-    Tracker tracker = googleAnalytics.newTracker(BuildConfig.ANALYTICS_KEY);
-    tracker.setSessionTimeout(300); // ms? s? better be s.
-    return new Analytics.GoogleAnalytics(tracker);
-  }
 
   @Provides @Singleton static ContentResolver provideContentResolver(Application app) {
     return app.getContentResolver();
