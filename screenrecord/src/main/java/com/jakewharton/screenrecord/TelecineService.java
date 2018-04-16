@@ -39,41 +39,15 @@ public final class TelecineService extends Service {
 
   @Inject @VideoSizePercentage Provider<Integer> videoSizePercentageProvider;
   @Inject @RecordingNotification Provider<Boolean> recordingNotificationProvider;
-  @Inject @UseDemoMode Provider<Boolean> useDemoModeProvider;
-
   @Inject ContentResolver contentResolver;
 
   private boolean running;
   private RecordingSession recordingSession;
 
   private final RecordingSession.Listener listener = new RecordingSession.Listener() {
-    private boolean useDemoMode;
 
     @Override public void onPrepare() {
-      useDemoMode = useDemoModeProvider.get();
-      if (useDemoMode) {
-        sendBroadcast(new BarsBuilder().mode(BarsBuilder.BarsMode.TRANSPARENT).build());
-        sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
-        sendBroadcast(new ClockBuilder().setTimeInHoursAndMinutes("1200").build());
-        sendBroadcast(new NetworkBuilder().airplane(FALSE)
-            .carrierNetworkChange(FALSE)
-            .mobile(TRUE, NetworkBuilder.Datatype.LTE, 0, 4)
-            .nosim(FALSE)
-            .build());
-        sendBroadcast(new NotificationsBuilder().visible(FALSE).build());
-        sendBroadcast(new SystemIconsBuilder().alarm(FALSE)
-            .bluetooth(SystemIconsBuilder.BluetoothMode.HIDE)
-            .cast(FALSE)
-            .hotspot(FALSE)
-            .location(FALSE)
-            .mute(FALSE)
-            .speakerphone(FALSE)
-            .tty(FALSE)
-            .vibrate(FALSE)
-            .zen(SystemIconsBuilder.ZenMode.HIDE)
-            .build());
-        sendBroadcast(new WifiBuilder().fully(TRUE).wifi(TRUE, 4).build());
-      }
+
     }
 
     @Override public void onStart() {
@@ -99,9 +73,7 @@ public final class TelecineService extends Service {
     }
 
     @Override public void onStop() {
-      if (useDemoMode) {
-        sendBroadcast(DemoMode.buildExit());
-      }
+
     }
 
     @Override public void onEnd() {

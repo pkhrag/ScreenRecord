@@ -19,7 +19,6 @@ import static android.content.Context.MODE_PRIVATE;
 @Module abstract class TelecineModule {
   private static final String PREFERENCES_NAME = "telecine";
   private static final boolean DEFAULT_HIDE_FROM_RECENTS = false;
-  private static final boolean DEFAULT_USE_DEMO_MODE = false;
   private static final boolean DEFAULT_RECORDING_NOTIFICATION = false;
   private static final int DEFAULT_VIDEO_SIZE_PERCENTAGE = 100;
 
@@ -46,15 +45,6 @@ import static android.content.Context.MODE_PRIVATE;
   @Provides @Singleton @HideFromRecents
   static BooleanPreference provideHideFromRecentsPreference(SharedPreferences prefs) {
     return new BooleanPreference(prefs, "hide-from-recents", DEFAULT_HIDE_FROM_RECENTS);
-  }
-
-  @Provides @Singleton @UseDemoMode
-  static BooleanPreference provideUseDemoModePreference(SharedPreferences prefs) {
-    return new BooleanPreference(prefs, "use-demo-mode", DEFAULT_USE_DEMO_MODE);
-  }
-
-  @Provides @UseDemoMode static Boolean provideUseDemoMode(@UseDemoMode BooleanPreference pref) {
-    return pref.get();
   }
 
   @Provides @Singleton @VideoSizePercentage

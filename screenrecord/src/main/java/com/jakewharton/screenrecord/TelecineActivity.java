@@ -31,8 +31,6 @@ public final class TelecineActivity extends AppCompatActivity {
   @BindView(com.jakewharton.screenrecord.R.id.spinner_video_size_percentage) Spinner videoSizePercentageView;
   @BindView(com.jakewharton.screenrecord.R.id.switch_hide_from_recents) Switch hideFromRecentsView;
   @BindView(com.jakewharton.screenrecord.R.id.switch_recording_notification) Switch recordingNotificationView;
-  @BindView(com.jakewharton.screenrecord.R.id.container_use_demo_mode) View useDemoModeContainerView;
-  @BindView(com.jakewharton.screenrecord.R.id.switch_use_demo_mode) Switch useDemoModeView;
   @BindView(com.jakewharton.screenrecord.R.id.launch) View launchView;
 
   @BindString(com.jakewharton.screenrecord.R.string.app_name) String appName;
@@ -41,11 +39,9 @@ public final class TelecineActivity extends AppCompatActivity {
   @Inject @VideoSizePercentage IntPreference videoSizePreference;
   @Inject @HideFromRecents BooleanPreference hideFromRecentsPreference;
   @Inject @RecordingNotification BooleanPreference recordingNotificationPreference;
-  @Inject @UseDemoMode BooleanPreference useDemoModePreference;
 
 
   private VideoSizePercentageAdapter videoSizePercentageAdapter;
-  private DemoModeHelper.ShowDemoModeSetting showDemoModeSetting;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     AndroidInjection.inject(this);
@@ -70,18 +66,6 @@ public final class TelecineActivity extends AppCompatActivity {
 
     hideFromRecentsView.setChecked(hideFromRecentsPreference.get());
     recordingNotificationView.setChecked(recordingNotificationPreference.get());
-    useDemoModeView.setChecked(useDemoModePreference.get());
-    showDemoModeSetting = new DemoModeHelper.ShowDemoModeSetting() {
-      @Override public void show() {
-        useDemoModeContainerView.setVisibility(VISIBLE);
-      }
-
-      @Override public void hide() {
-        useDemoModeView.setChecked(false);
-        useDemoModeContainerView.setVisibility(GONE);
-      }
-    };
-    DemoModeHelper.showDemoModeSetting(this, showDemoModeSetting);
   }
 
   @NonNull private Bitmap rasterizeTaskIcon() {
@@ -90,6 +74,8 @@ public final class TelecineActivity extends AppCompatActivity {
     ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
     int size = am.getLauncherLargeIconSize();
     Bitmap icon = Bitmap.createBitmap(size, size, ARGB_8888);
+
+
 
     Canvas canvas = new Canvas(icon);
     drawable.setBounds(0, 0, size, size);
@@ -131,19 +117,8 @@ public final class TelecineActivity extends AppCompatActivity {
     }
   }
 
-
-  @OnCheckedChanged(com.jakewharton.screenrecord.R.id.switch_use_demo_mode) void onUseDemoModeChanged() {
-    boolean newValue = useDemoModeView.isChecked();
-    boolean oldValue = useDemoModePreference.get();
-    if (newValue != oldValue) {
-      Timber.d("Use demo mode preference changing to %s", newValue);
-      useDemoModePreference.set(newValue);
-    }
-  }
-
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (!CaptureHelper.handleActivityResult(this, requestCode, resultCode, data)
-        && !DemoModeHelper.handleActivityResult(this, requestCode, showDemoModeSetting)) {
+    if (!CaptureHelper.handleActivityResult(this, requestCode, resultCode, data)) {
       super.onActivityResult(requestCode, resultCode, data);
     }
   }
