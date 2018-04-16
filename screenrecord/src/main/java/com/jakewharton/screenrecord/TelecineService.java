@@ -41,7 +41,6 @@ public final class TelecineService extends Service {
   @Inject @RecordingNotification Provider<Boolean> recordingNotificationProvider;
   @Inject @UseDemoMode Provider<Boolean> useDemoModeProvider;
 
-  @Inject Analytics analytics;
   @Inject ContentResolver contentResolver;
 
   private boolean running;
@@ -131,7 +130,7 @@ public final class TelecineService extends Service {
     }
 
     recordingSession =
-        new RecordingSession(this, listener, resultCode, data, analytics,
+        new RecordingSession(this, listener, resultCode, data,
             videoSizePercentageProvider);
     recordingSession.showOverlay();
 

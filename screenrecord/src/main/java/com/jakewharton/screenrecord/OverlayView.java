@@ -184,5 +184,5 @@ final class OverlayView extends FrameLayout {
           }
         });
   }
-  
+
 }

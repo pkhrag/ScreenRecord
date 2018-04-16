@@ -12,8 +12,8 @@ public final class TelecineShortcutLaunchActivity extends Activity {
 
   static Intent createQuickTileIntent(Context context) {
     Intent intent = new Intent(context, TelecineShortcutLaunchActivity.class);
-    intent.putExtra(KEY_ACTION, Analytics.ACTION_QUICK_TILE_LAUNCHED);
     return intent;
+
   }
 
 

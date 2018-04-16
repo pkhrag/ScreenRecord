@@ -98,7 +98,7 @@ final class RecordingSession {
   private long recordingStartNanos;
 
   RecordingSession(Context context, Listener listener, int resultCode, Intent data,
-      Analytics analytics, Provider<Integer> videoSizePercentage) {
+      Provider<Integer> videoSizePercentage) {
     this.context = context;
     this.listener = listener;
     this.resultCode = resultCode;
